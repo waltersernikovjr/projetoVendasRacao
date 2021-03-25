@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  api:
+      container_name: apiRacao
+      image: sernikov/apachenodephp7.4:1.1
+      ports:
+          - 800:80
+      volumes:
+          - ./:/var/www/html
+      stdin_open: true 
+      tty: true
+      restart: always
+      depends_on: 
+        - db
+        - db-test
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: racao
+    restart: always
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data 
+  db-test:
+    container_name: db-test
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: racao
+    restart: always
+    ports:
+      - "15433:5432"
+    volumes:
+      - ./postgres-test:/var/lib/postgresql/data
